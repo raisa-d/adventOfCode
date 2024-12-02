@@ -1,0 +1,5 @@
+.DS_Store
+.vscode
+**/pathname.py
+**/__pycache__
+*.pyc
