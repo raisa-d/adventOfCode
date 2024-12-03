@@ -1,27 +1,50 @@
-const numSafeReports = data => {
+const splitDataIntoRows = data => {
     // split data into rows (1 arr per row)
     let rows = data.split('\n')
     // map rows so each row is an array of nums
     rows = rows.map(row => row.split(' ').map(num => +num));
+    return rows
+};
+
+// check if it is safe. is it asc or desc, are all differences valid?
+const isSafe = row => {
+    let isAsc = row.every((num, i, a) => i === 0 || num > a[i-1]);
+    let isDesc = row.every((num, i, a) => i === 0 || num < a[i-1]);
+    let allDifferencesValid = row.every((num, i, arr) => {
+        if(i === arr.length-1) {
+            return true;
+        }
+        const diff = Math.abs(num - arr[i+1])
+        return diff >= 1 && diff <= 3;
+    });
+    return (isAsc || isDesc) && allDifferencesValid;
+};
+
+// check if it can be made safe
+// if at least one row isSafe after removing an element, return true
+const canBeMadeSafe = row => {
+    return row.some((_, i) => {
+        let modifiedRow = [...row.slice(0, i), ...row.slice(i+1)];
+        return isSafe(modifiedRow);
+    });
+};
+
+const problemDampener = data => {
+    const rows = splitDataIntoRows(data);
     
     let safeCount = 0;
     
     for(let row of rows) {
-        // check if the row is ascending or descending
-        let isAsc = row.every((num, i, a) => i === 0 || num > a[i-1]);
-        let isDesc = row.every((num, i, a) => i === 0 || num < a[i-1]);
-        let allDifferencesValid = row.every((num, i, arr) => {
-            if(i === arr.length-1) {
-                return true;
-            }
-            const diff = Math.abs(num - arr[i+1])
-            return diff >= 1 && diff <= 3;
-        });
-        if((isAsc || isDesc) && allDifferencesValid) {
+        if(isSafe(row)) {
             safeCount++
-        }
-    }
-    return safeCount
+        } else {
+            // remove one level at a time
+            if (canBeMadeSafe(row)) {
+                safeCount++;
+            };
+        };
+    };
+    return safeCount;
 };
 
 const data = `1 2 4 7 9 8
@@ -1023,6 +1046,6 @@ const data = `1 2 4 7 9 8
 53 54 55 57 60 61
 21 24 27 29 30 33 34 36
 17 20 23 25 26 29 31
-85 86 89 92 94` // 2
+85 86 89 92 94`
 
-console.log(numSafeReports(data)) // CORRECT ANSWER: 631
+console.log(problemDampener(data)) // 665
