@@ -32,6 +32,8 @@ Even on Day 1 of Advent of Code 2024, I’ve picked up a few valuable lessons wh
 4. **Improving `.gitignore` Usage**:  
    - I learned how to configure `.gitignore` to effectively ignore files nested within subdirectories using patterns like `**/filename`. This skill has improved my workflow and repository management.
 
+The Day 2 challenge solidified the importance of breaking a complex problem down into smaller, manageable pieces. Then, extend the logic.
+
 ## Connect
 <p align="center">
   <a href="https://raisadorzback.netlify.app/" target="blank">
